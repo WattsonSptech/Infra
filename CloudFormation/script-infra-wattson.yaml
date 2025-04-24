@@ -77,13 +77,13 @@ Resources:
       CidrBlock: !Ref VpcCidr
       Tags:
         - Key: Name
-          Value: !Sub ${AWS::StackName}-${Client}
+          Value: !Sub vpc-${Client}
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Name
-          Value: !Sub ${AWS::StackName}-${Client}
+          Value: !Sub igw-${Client}
   InternetGatewayAttachment:
     DependsOn: [InternetGateway, Vpc]
     Type: AWS::EC2::VPCGatewayAttachment
@@ -97,7 +97,7 @@ Resources:
       VpcId: !Ref Vpc
       Tags:
         - Key: Name
-          Value: !Sub ${AWS::StackName}-${Client}-public
+          Value: !Sub rtb-${Client}
   PublicRouteTableRouteInternet:
     DependsOn: [PublicRouteTable, InternetGateway]
     Type: AWS::EC2::Route
@@ -114,7 +114,7 @@ Resources:
       VpcId: !Ref Vpc
       Tags:
         - Key: Name
-          Value: !Sub ${AWS::StackName}-${Client}-public
+          Value: !Sub sub-pub-${Client}
   RouteTableAssociationPublicSubnet:
     DependsOn: [PublicRouteTable, PublicSubnet]
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -137,7 +137,7 @@ Resources:
           CidrIp: 0.0.0.0/0
       Tags:
         - Key: Name
-          Value: !Sub ${AWS::StackName}-${Client}
+          Value: !Sub sgp-pub-${Client}
   Instance:
     DependsOn: [RouteTableAssociationPublicSubnet, InstanceSecurityGroup]
     Type: AWS::EC2::Instance
@@ -181,7 +181,7 @@ Resources:
         - !Ref InstanceSecurityGroup
       Tags:
         - Key: Name
-          Value: !Sub ${AWS::StackName}-${Client}
+          Value: !Sub ec2-${Client}-pub
   S3BucketRaw:
     DependsOn: Instance
     Type: AWS::S3::Bucket
