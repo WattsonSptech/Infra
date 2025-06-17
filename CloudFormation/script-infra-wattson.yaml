@@ -61,7 +61,7 @@ Parameters:
   Ec2AmiId:
     Type: String
     Description: Id da AMI
-    Default: ami-0f9fc25dd2506cf6d
+    Default: ami-0fc5d935ebf8bc3bc
   Ec2IamInstanceProfile:
     Type: String
     Description: O nome do Instance Profile
