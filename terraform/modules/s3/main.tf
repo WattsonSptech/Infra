@@ -1,34 +1,34 @@
-resource "aws_s3_bucket" "bkt-wattson-raw" {
+resource "aws_s3_bucket" "bkt-wattson" {
+  count = length(var.s3_buckets)
   tags = {
-    Name = "bkt-wattson-raw"
+    Name = var.s3_buckets[count.index]
   }
 
-  bucket = "bkt-wattson-raw"
+  bucket = var.s3_buckets[count.index]
 
   force_destroy = false
 
   object_lock_enabled = false
 }
-
 resource "aws_s3_bucket_policy" "bkt_policy_acesso" {
-  bucket = aws_s3_bucket.bkt-wattson-raw.id
-
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect    = "Allow",
-        Principal = "*",
-        Action    = "s3:GetObject",
-        Resource  = "arn:aws:s3:::bkt-wattson-raw/*"
-      }
-    ]
-  })
+  count = length(var.s3_buckets)
+  bucket = aws_s3_bucket.bkt-wattson[count.index].id
+   policy = jsonencode({
+     Version = "2012-10-17",
+     Statement = [
+       {
+         Effect    = "Allow",
+         Principal = "*",
+         Action    = ["s3:GetObject","s3:PutObject","s3:DeleteObject"],
+         Resource  = "${aws_s3_bucket.bkt-wattson[count.index].arn}/*"       
+         }
+     ]
+   })
 }
 
 resource "aws_s3_bucket_cors_configuration" "bkt-cors-config" {
-  bucket = aws_s3_bucket.bkt-wattson-raw.id
-
+  count = length(var.s3_buckets)
+  bucket = var.s3_buckets[count.index]
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["GET"]
@@ -38,9 +38,9 @@ resource "aws_s3_bucket_cors_configuration" "bkt-cors-config" {
 }
 
 resource "aws_s3_bucket_public_access_block" "bucket_acessos" {
-  bucket = aws_s3_bucket.bkt-wattson-raw.bucket
+  count = length(var.s3_buckets)
+  bucket = var.s3_buckets[count.index]
 
   block_public_acls = false
-
   block_public_policy = false
 }
