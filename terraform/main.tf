@@ -25,3 +25,18 @@ module "security_group" {
 module "s3" {
   source = "./modules/s3"
 }
+
+module "iot_thing" {
+  source = "./modules/iot_thing"
+  lbd_data_dynamodb_arn = module.lambda.lbd_data_dynamodb_arn
+  lbd_data_dynamodb_name = module.lambda.lbd_data_dynamodb_name
+}
+
+module "lambda" {
+  source = "./modules/lambda"
+  dynamodb_table_wattson_name = module.dynamodb.dynamodb_table_name
+}
+
+module "dynamodb" {
+  source = "./modules/dynamodb"
+}
