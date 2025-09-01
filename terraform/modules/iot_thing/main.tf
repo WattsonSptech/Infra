@@ -12,8 +12,13 @@ resource "aws_iot_policy" "policy_wattson" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = ["iot:*"],
+        Effect   = "Allow", 
+        Action   = [
+          "iot:Connect",
+          "iot:Publish",
+          "iot:Subscribe",
+          "iot:Receive"
+        ],
         Resource = "*"
       }
     ]
@@ -48,4 +53,14 @@ resource "aws_lambda_permission" "allow_iot" {
   function_name = var.lbd_data_dynamodb_name
   principal     = "iot.amazonaws.com"
   source_arn    = aws_iot_topic_rule.rule.arn
+}
+
+resource "local_file" "certificate_file" {
+  content = aws_iot_certificate.cert_thing_wattson.certificate_pem
+  filename = "cert/iot-certificate.pem.crt"
+}
+
+resource "local_file" "key_file" {
+  content = aws_iot_certificate.cert_thing_wattson.private_key
+  filename = "cert/iot-private-key.pem.crt"
 }
