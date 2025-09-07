@@ -1,21 +1,25 @@
-import json, os, time, uuid, boto3
+import json, os, boto3,uuid
 from decimal import Decimal
 dynamo = boto3.resource("dynamodb").Table(os.environ["TABLE_NAME"])
 def lambda_handler(event, context):
-    # evento vindo do IoT Core Rule -> JSON em 'event'
-    # Ex.: {"deviceId":"sensor-001","temp":24.2,"hum":60}
-    try:
-        msg = event if isinstance(event, dict) else json.loads(event)
-        item = {
-            "deviceId": str(msg.get("deviceId", "unknown")),
-            "ts": int(time.time()*1000),
-            "id": uuid.uuid4().hex,
-            "temp": Decimal(str(msg.get("temp", 0))),
-            "hum": Decimal(str(msg.get("hum", 0))),
-            "raw": json.dumps(msg)
+
+    if not isinstance(event,list):
+        return {"status":400,"body":"Entrada esperada era list"}
+    try:   
+        with dynamo.batch_writer() as b:
+            for item in event:
+                obj = {
+                    "id" : str(uuid.uuid4()),
+                    "valueType": str(item.get("valueType","")),
+                    "value": Decimal(str(item.get("value",0))),
+                    "instant": str(item.get("instant","")),
+                    "scenery" : str(item.get("scenery","")),
+                    "zone": str(item.get("zone",""))
+                }
+                b.put_item(Item=obj)
+        return {
+            'statusCode': 200,
+            'body': json.dumps(f'Sucesso! {len(event)} itens foram enviados para a tabela {os.environ["TABLE_NAME"]}.')
         }
-        dynamo.put_item(Item=item)
-        return {"status": "ok", "saved": {"deviceId":
-item["deviceId"], "ts": item["ts"]}}
     except Exception as e:
-        return {"status": "error", "detail": str(e)}
+        return {'statusCode': 500, 'body': f"Houve um erro ao tentar enviar os dados para a tabela: {e}"}
