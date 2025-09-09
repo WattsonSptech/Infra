@@ -5,7 +5,7 @@ data "archive_file" "name" {
 }
 resource "aws_lambda_function" "lbd_data_dynamodb" {
   function_name = "lmb_data_dynamodb"
-  role          = "arn:aws:iam::716961619224:role/LabRole"
+  role          = "arn:aws:iam::${local.id_account}:role/LabRole"
   handler       = "lmb_data_dynamodb.lambda_handler"
   runtime       = "python3.10"
   filename      = "../script_lambda/lmb_data_dynamodb.zip"
