@@ -1,16 +1,14 @@
 resource "aws_dynamodb_table" "dynamodb_table_wattson" {
   name           = "storage_iot_wattson"
   billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "deviceId"
-  range_key      = "ts"
-
+  hash_key       = "id"
+  range_key      = "instant"
   attribute {
-    name = "deviceId"
+    name = "id"
     type = "S"
   }
-
   attribute {
-    name = "ts"
-    type = "N"
+    name = "instant"
+    type = "S"
   }
 }

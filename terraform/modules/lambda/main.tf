@@ -1,6 +1,11 @@
+data "archive_file" "name" {
+  output_path = "../script_lambda/lmb_data_dynamodb.zip"
+  source_file = "../script_lambda/lmb_data_dynamodb.py"
+  type = "zip"
+}
 resource "aws_lambda_function" "lbd_data_dynamodb" {
   function_name = "lmb_data_dynamodb"
-  role          = "arn:aws:iam::637952174709:role/LabRole"
+  role          = "arn:aws:iam::${local.id_account}:role/LabRole"
   handler       = "lmb_data_dynamodb.lambda_handler"
   runtime       = "python3.10"
   filename      = "../script_lambda/lmb_data_dynamodb.zip"
