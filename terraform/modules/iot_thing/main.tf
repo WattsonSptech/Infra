@@ -35,9 +35,9 @@ resource "aws_iot_thing_principal_attachment" "thing_attach" {
   principal = aws_iot_certificate.cert_thing_wattson.arn
 }
 
-resource "aws_iot_topic_rule" "rule" {
+resource "aws_iot_topic_rule" "dynamodb_rule" {
   name        = "rule_sensor_to_lambda"
-  description = "Enviar arquivo com dados dos sensores para lambda"
+  description = "Enviar arquivo com dados dos sensores para lambda DO DynamoDB"
   enabled     = true
   sql         = "SELECT * FROM 'wattson/sensors/energy'"
   sql_version = "2016-03-23"
@@ -47,12 +47,32 @@ resource "aws_iot_topic_rule" "rule" {
   }
 }
 
-resource "aws_lambda_permission" "allow_iot" {
+resource "aws_lambda_permission" "allow_dynamodb_iot" {
   statement_id  = "AllowExecutionFromIoT"
   action        = "lambda:InvokeFunction"
   function_name = var.lbd_data_dynamodb_name
   principal     = "iot.amazonaws.com"
-  source_arn    = aws_iot_topic_rule.rule.arn
+  source_arn    = aws_iot_topic_rule.dynamodb_rule.arn
+}
+
+resource "aws_iot_topic_rule" "s3_rule" {
+  name        = "rule_sensor_to_s3"
+  description = "Enviar arquivo com dados dos sensores para a lambda do S3"
+  enabled     = true
+  sql         = "SELECT * FROM 'wattson/sensors/energy'"
+  sql_version = "2016-03-23"
+
+  lambda {
+    function_arn = var.lbd_data_s3_arn
+  }
+}
+
+resource "aws_lambda_permission" "allow_s3_iot" {
+  statement_id  = "AllowExecutionFromIoT"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lbd_data_s3_name
+  principal     = "iot.amazonaws.com"
+  source_arn    = aws_iot_topic_rule.s3_rule.arn
 }
 
 resource "local_file" "certificate_file" {
