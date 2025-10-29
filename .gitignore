@@ -43,3 +43,5 @@ terraform.rc
 
 iot-certificate.pem.crt
 iot-private-key.pem.crt
+.idea
+**.hcl
