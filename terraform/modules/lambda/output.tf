@@ -1,9 +1,9 @@
-output "lbd_data_dynamodb_arn" {
-  value = aws_lambda_function.lbd_data_dynamodb.arn
+output "lmb_data_dynamodb_arn" {
+  value = aws_lambda_function.lmb_data_dynamodb.arn
 }
 
-output "lbd_data_dynamodb_name" {
-  value = aws_lambda_function.lbd_data_dynamodb.function_name
+output "lmb_data_dynamodb_name" {
+  value = aws_lambda_function.lmb_data_dynamodb.function_name
 }
 
 output "lbd_data_s3_arn" {

@@ -1,8 +1,8 @@
-variable "lbd_data_dynamodb_arn" {
+variable "lmb_data_dynamodb_arn" {
   type = string
 }  
 
-variable "lbd_data_dynamodb_name" {
+variable "lmb_data_dynamodb_name" {
   type = string
 }  
 

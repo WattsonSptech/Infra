@@ -3,7 +3,7 @@ data "archive_file" "name" {
   source_file = "../script_lambda/lmb_data_dynamodb.py"
   type = "zip"
 }
-resource "aws_lambda_function" "lbd_data_dynamodb" {
+resource "aws_lambda_function" "lmb_data_dynamodb" {
   function_name = "lmb_data_dynamodb"
   role          = "arn:aws:iam::${local.id_account}:role/LabRole"
   handler       = "lmb_data_dynamodb.lambda_handler"

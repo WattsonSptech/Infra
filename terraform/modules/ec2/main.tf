@@ -17,3 +17,10 @@ resource "aws_instance" "ec2-pub-wattson" {
 
   subnet_id = var.sub_pub_id
 }
+
+# ebs.tf
+resource "aws_ebs_volume" "example" {
+  availability_zone = "us-east-1a"
+  size = 15
+  # Minimal configuration - will be filled after import
+}

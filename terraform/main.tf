@@ -28,8 +28,8 @@ module "s3" {
 
 module "iot_thing" {
   source = "./modules/iot_thing"
-  lbd_data_dynamodb_arn = module.lambda.lbd_data_dynamodb_arn
-  lbd_data_dynamodb_name = module.lambda.lbd_data_dynamodb_name
+  lmb_data_dynamodb_arn = module.lambda.lmb_data_dynamodb_arn
+  lmb_data_dynamodb_name = module.lambda.lmb_data_dynamodb_name
   lbd_data_s3_arn = module.lambda.lbd_data_s3_arn
   lbd_data_s3_name = module.lambda.lbd_data_s3_name
 }
