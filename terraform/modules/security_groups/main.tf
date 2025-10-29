@@ -1,5 +1,5 @@
-resource "aws_security_group" "sgp_pub_ichiban" {
-  name        = "sgp_pub_ichiban"
+resource "aws_security_group" "sgp_pub_wattson" {
+  name        = "sgp_pub_wattson"
   description = "Allow SSH acess"
   vpc_id      = var.vpc_id
 
@@ -22,6 +22,6 @@ resource "aws_security_group" "sgp_pub_ichiban" {
   }
 
   tags = {
-    Name = "sgp_pub_ichiban"
+    Name = "sgp_pub_wattson"
   }
 }
