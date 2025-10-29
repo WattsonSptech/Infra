@@ -23,7 +23,7 @@ resource "aws_athena_named_query" "create_reclamacao_cliente" {
 
   query = <<EOF
 CREATE EXTERNAL TABLE IF NOT EXISTS wattson_db.reclamacao_cliente (
-  hora_minuto_reclamacao STRING,
+  hora_minuto_reclamacao TIMESTAMP,
   reclamacao_data DATE,
   reclamacao_ano_mes STRING,
   reclamacao_status STRING,
@@ -37,7 +37,7 @@ WITH SERDEPROPERTIES (
   'separatorChar' = ',',
   'quoteChar' = '"'
 )
-LOCATION 's3://bkt-wattson-raw-716961619224/'
+LOCATION 's3://bkt-wattson-raw-${local.id_conta}/'
 TBLPROPERTIES (
   'skip.header.line.count'='1'
 );
@@ -62,7 +62,7 @@ WITH SERDEPROPERTIES (
   'separatorChar' = ',',
   'quoteChar' = '"'
 )
-LOCATION 's3://bkt-wattson-raw-716961619224/'
+LOCATION 's3://bkt-wattson-raw-${local.id_conta}/'
 TBLPROPERTIES (
   'skip.header.line.count'='1'
 );
@@ -77,7 +77,7 @@ resource "aws_athena_named_query" "create_tensao_clima" {
 
   query = <<EOF
 CREATE EXTERNAL TABLE IF NOT EXISTS wattson_db.tensao_clima (
-  hora_minuto_geracao string,
+  hora_minuto_geracao TIMESTAMP,
   data_geracao DATE,
   ano_mes_geracao STRING,
   zona_geracao STRING,
@@ -95,7 +95,7 @@ WITH SERDEPROPERTIES (
   'separatorChar' = ',',
   'quoteChar' = '"'
 )
-LOCATION 's3://bkt-wattson-raw-716961619224/'
+LOCATION 's3://bkt-wattson-raw-${local.id_conta}/'
 TBLPROPERTIES (
   'skip.header.line.count'='1'
 );
