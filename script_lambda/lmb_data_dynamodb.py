@@ -10,11 +10,9 @@ def lambda_handler(event, context):
             for item in event:
                 obj = {
                     "id" : str(uuid.uuid4()),
-                    "valueType": str(item.get("valueType","")),
-                    "value": Decimal(str(item.get("value",0))),
-                    "instant": str(item.get("instant","")),
-                    "scenery" : str(item.get("scenery","")),
-                    "zone": str(item.get("zone",""))
+                    "instant": str(item.get("timestamp","")),
+                    "value": Decimal(str(item.get("valor",0))),
+                    "zone": str(item.get("zona",""))
                 }
                 b.put_item(Item=obj)
         return {
