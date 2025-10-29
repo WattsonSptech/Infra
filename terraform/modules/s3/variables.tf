@@ -6,7 +6,8 @@ locals {
   s3_buckets = [
     "bkt-wattson-raw-${local.id_conta}",
     "bkt-wattson-trusted-${local.id_conta}",
-    "bkt-wattson-client-${local.id_conta}"
+    "bkt-wattson-client-${local.id_conta}",
+    "athena-results-wattson-${local.id_conta}"
   ]
 }
 

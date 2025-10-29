@@ -40,3 +40,6 @@ terraform.rc
 *.pem.pub
 
 .terraform.lock.hcl
+
+iot-certificate.pem.crt
+iot-private-key.pem.crt

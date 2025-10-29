@@ -42,3 +42,8 @@ module "lambda" {
 module "dynamodb" {
   source = "./modules/dynamodb"
 }
+
+module "athena" {
+  source = "./modules/athena"
+  bkt_athena_results_wattson = module.s3.bkt_athena_results_wattson
+}
