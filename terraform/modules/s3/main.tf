@@ -11,6 +11,16 @@ resource "aws_s3_bucket" "bkt-wattson" {
   }
 
 }
+
+resource "aws_s3_object" "bkt-wattson-folders" {
+  for_each = toset(local.folders)
+
+  bucket = aws_s3_bucket.bkt-wattson["bkt-wattson-client-${local.id_conta}"].id
+  key = each.key
+  content = ""
+
+  depends_on = [aws_s3_bucket.bkt-wattson]
+}
 resource "aws_s3_bucket_policy" "bkt_policy_acesso" {
   for_each = aws_s3_bucket.bkt-wattson
   # count  = length(var.s3_buckets)

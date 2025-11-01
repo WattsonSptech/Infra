@@ -9,8 +9,13 @@ locals {
     "bkt-wattson-client-${local.id_conta}",
     "athena-results-wattson-${local.id_conta}"
   ]
-}
 
+  folders = [
+    "reclamacao_cliente/",
+    "consumo/",
+    "tensao_clima/"
+  ]
+}
 # variable "s3_buckets" {
 #     type = list(string)
 #     default = [ "bkt-wattson-raw", "bkt-wattson-trusted", "bkt-wattson-client" ]

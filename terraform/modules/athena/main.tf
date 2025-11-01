@@ -23,21 +23,23 @@ resource "aws_athena_named_query" "create_reclamacao_cliente" {
 
   query = <<EOF
 CREATE EXTERNAL TABLE IF NOT EXISTS wattson_db.reclamacao_cliente (
-  hora_minuto_reclamacao TIMESTAMP,
-  reclamacao_data DATE,
-  reclamacao_ano_mes STRING,
+  bac1 INT,
+  bac2 INT,
+  data_reclamacao DATE,
+  hora_minuto_reclamacao STRING,
   reclamacao_status STRING,
-  reclamacao_problema STRING,
   reclamacao_categoria STRING,
-  reclamacao_tipo_produto STRING,
-  reclamacao_sentimento STRING
+  tipo_produto STRING,
+  tipo_problema STRING,
+  reclamacao_sentimento STRING,
+  data_hora_reclamacao TIMESTAMP
 )
-ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
 WITH SERDEPROPERTIES (
-  'separatorChar' = ',',
-  'quoteChar' = '"'
+  'field.delim'=';',
+  'serialization.format'=';'
 )
-LOCATION 's3://bkt-wattson-raw-${local.id_conta}/'
+LOCATION 's3://bkt-wattson-client-${local.id_conta}/reclamacao_cliente'
 TBLPROPERTIES (
   'skip.header.line.count'='1'
 );
@@ -52,17 +54,18 @@ resource "aws_athena_named_query" "create_consumo" {
 
   query = <<EOF
 CREATE EXTERNAL TABLE IF NOT EXISTS wattson_db.consumo (
-  ano_mes_coleta STRING,
+  bac INT,
+  tipo_consumo STRING,
   numero_consumidores INT,
-  numero_consumo INT,
-  tipo_consumo STRING
+  consumo INT,
+  ano_mes_coleta STRING
 )
-ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
 WITH SERDEPROPERTIES (
-  'separatorChar' = ',',
-  'quoteChar' = '"'
+  'field.delim'=';',
+  'serialization.format'=';'
 )
-LOCATION 's3://bkt-wattson-raw-${local.id_conta}/'
+LOCATION 's3://bkt-wattson-client-${local.id_conta}/consumo/'
 TBLPROPERTIES (
   'skip.header.line.count'='1'
 );
@@ -77,25 +80,27 @@ resource "aws_athena_named_query" "create_tensao_clima" {
 
   query = <<EOF
 CREATE EXTERNAL TABLE IF NOT EXISTS wattson_db.tensao_clima (
-  hora_minuto_geracao TIMESTAMP,
+  bac INT,
   data_geracao DATE,
+  hora_minuto_geracao STRING,
   ano_mes_geracao STRING,
   zona_geracao STRING,
-  tensao_valor DECIMAL(3,1),
+  data_hora_geracao TIMESTAMP,
+  tensao_valor DECIMAL(4,1),
   tensao_severidade BOOLEAN,
+  indice_aprovacao DECIMAL(2,1),
   clima_temperatura INT,
   clima_chuva DECIMAL(3,1),
   clima_vento DECIMAL(3,1),
   clima_severidade BOOLEAN,
-  clima_evento STRING,
-  indice_aprovacao DECIMAL(2,1)
+  clima_evento STRING
 )
-ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
 WITH SERDEPROPERTIES (
-  'separatorChar' = ',',
-  'quoteChar' = '"'
+  'field.delim'=';',
+  'serialization.format'=';'
 )
-LOCATION 's3://bkt-wattson-raw-${local.id_conta}/'
+LOCATION 's3://bkt-wattson-client-${local.id_conta}/tensao_clima/'
 TBLPROPERTIES (
   'skip.header.line.count'='1'
 );
