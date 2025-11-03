@@ -24,7 +24,6 @@ resource "aws_athena_named_query" "create_reclamacao_cliente" {
   query = <<EOF
 CREATE EXTERNAL TABLE IF NOT EXISTS wattson_db.reclamacao_cliente (
   bac1 INT,
-  bac2 INT,
   data_reclamacao DATE,
   hora_minuto_reclamacao STRING,
   reclamacao_status STRING,
