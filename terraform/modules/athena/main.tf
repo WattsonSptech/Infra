@@ -87,12 +87,12 @@ CREATE EXTERNAL TABLE IF NOT EXISTS wattson_db.tensao_clima (
   data_hora_geracao TIMESTAMP,
   tensao_valor DECIMAL(4,1),
   tensao_severidade BOOLEAN,
-  indice_aprovacao DECIMAL(2,1),
   clima_temperatura INT,
   clima_chuva DECIMAL(3,1),
   clima_vento DECIMAL(3,1),
   clima_severidade BOOLEAN,
-  clima_evento STRING
+  clima_evento STRING,
+  indice_aprovacao DECIMAL(2,1)
 )
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
 WITH SERDEPROPERTIES (
